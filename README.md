@@ -10,13 +10,19 @@ Una landing page de boda simple, moderna y pensada para ser fácil de personaliz
 * Reproductor de música opcional.
 * Estructura limpia sin datos personales.
 
+## Guía de configuración
+
+Antes de personalizar la landing, seguí la guía completa paso a paso:
+
+- [GUIA_CONFIGURACION.md](GUIA_CONFIGURACION.md)
+
 ## Cómo usar esta plantilla
 
 1. Hacé clic en "Use this template" en GitHub para crear tu propio repositorio.
 2. Instalá dependencias y levantá el proyecto:
 
    ```bash
-   cd src
+   cd wedding-free-template
    npm install
    npm run dev
    ```

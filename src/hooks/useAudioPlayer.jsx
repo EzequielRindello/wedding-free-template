@@ -5,41 +5,56 @@ const useAudioPlayer = (audioSrc) => {
   const [showSplash, setShowSplash] = useState(true);
   const audioRef = useRef(null);
 
-  useEffect(() => {
-    audioRef.current = new Audio(audioSrc);
-    audioRef.current.loop = true;
-    audioRef.current.volume = 0.5;
+  const ensureAudio = () => {
+    if (!audioRef.current) {
+      const audio = new Audio(audioSrc);
+      audio.loop = true;
+      audio.volume = 0.5;
+      audio.preload = 'none';
+      audioRef.current = audio;
+    }
 
+    return audioRef.current;
+  };
+
+  useEffect(() => {
     return () => {
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current = null;
       }
     };
-  }, []);
+  }, [audioSrc]);
 
   const startMusic = () => {
-    if (audioRef.current) {
-      audioRef.current.play()
+    const audio = ensureAudio();
+
+    audio.play()
+      .then(() => {
+        setIsPlaying(true);
+        setShowSplash(false);
+      })
+      .catch((err) => {
+        console.error('Error al reproducir:', err);
+        setShowSplash(false);
+      });
+  };
+
+  const togglePlay = () => {
+    const audio = ensureAudio();
+
+    if (isPlaying) {
+      audio.pause();
+      setIsPlaying(false);
+    } else {
+      audio.play()
         .then(() => {
           setIsPlaying(true);
-          setShowSplash(false);
         })
-        .catch(err => {
-          console.log('Error al reproducir:', err);
-          setShowSplash(false);
+        .catch((err) => {
+          console.error('Error al reproducir:', err);
+          setIsPlaying(false);
         });
-    }
-  };
-  const togglePlay = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-        setIsPlaying(false);
-      } else {
-        audioRef.current.play();
-        setIsPlaying(true);
-      }
     }
   };
 

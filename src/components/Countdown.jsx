@@ -1,14 +1,14 @@
 import useCountdown from '../hooks/useCountdown';
+import siteData from '../content/siteData';
 
 const Countdown = () => {
-  // usa este formato AAAA-MM-DDTHH:MM:SS
-  // es: (año)-(mes)-(día)T(hora):(minuto):(segundo)
-  const timeLeft = useCountdown('2070-04-03T00:00:00');
+  const { countdown } = siteData;
+  const timeLeft = useCountdown(countdown.targetDate);
 
   return (
     <section className="countdown-section">
-      <h2 className="section-title">XX • xxxx • 20XX</h2>
-      <p className="countdown-text">¡Listos para festejar juntos! Faltan...</p>
+      <h2 className="section-title">{countdown.displayDate}</h2>
+      <p className="countdown-text">{countdown.introText}</p>
       <div className="countdown-grid">
         <div className="countdown-item">
           <span className="countdown-number">{timeLeft.days}</span>

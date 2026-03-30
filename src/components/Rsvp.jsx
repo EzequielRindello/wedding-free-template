@@ -1,20 +1,37 @@
+import siteData from '../content/siteData';
+import { isConfiguredExternalUrl, openExternalUrl } from '../utils/externalLinks';
+import RsvpForm from './RsvpForm';
+import { trackEvent } from '../utils/analytics';
+
 const Rsvp = () => {
+  const { rsvp } = siteData;
+  const isRsvpConfigured = isConfiguredExternalUrl(rsvp.formUrl);
+
   const handleRsvpClick = () => {
-    window.open('https://tu-formulario-de-google', '_blank');
+    trackEvent('rsvp_external_click', {
+      source: 'rsvp_section'
+    });
+    openExternalUrl(rsvp.formUrl);
   };
 
   return (
-    <section className="rsvp-section">
-      <h2 className="section-title">Confirmación de Asistencia</h2>
-      <h3 className="rsvp-subtitle">Esperamos que puedas acompañarnos en este momento tan especial</h3>
+    <section className="rsvp-section" id={rsvp.sectionId}>
+      <h2 className="section-title">{rsvp.title}</h2>
+      <h3 className="rsvp-subtitle">{rsvp.subtitle}</h3>
       <p className="section-text">
-        Por favor, confirmanos tu asistencia antes del XX de xxxx de 20XX.
+        {rsvp.description}
         <br />
-        Tu presencia hará de este día algo inolvidable.
+        {rsvp.supportText}
       </p>
-      <button className="cta-btn" onClick={handleRsvpClick}>
-        Confirmar Asistencia
-      </button>
+      <p className="rsvp-deadline">{rsvp.deadlineText}</p>
+      <RsvpForm />
+      {isRsvpConfigured ? (
+        <button className="cta-btn rsvp-secondary-btn" onClick={handleRsvpClick} type="button">
+          {rsvp.externalCtaLabel}
+        </button>
+      ) : (
+        <p className="link-helper">{rsvp.formUnavailableText}</p>
+      )}
     </section>
   );
 };

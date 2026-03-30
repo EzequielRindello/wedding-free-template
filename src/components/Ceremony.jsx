@@ -1,36 +1,116 @@
-import { FaMapMarkerAlt } from 'react-icons/fa';
+import { FaCalendarPlus, FaDownload, FaMapMarkerAlt, FaRoute } from 'react-icons/fa';
+import siteData from '../content/siteData';
+import { isConfiguredExternalUrl, openExternalUrl } from '../utils/externalLinks';
+import { buildGoogleCalendarUrl, buildIcsDataUri } from '../utils/calendarLinks';
+import { trackEvent } from '../utils/analytics';
 
 const Ceremony = () => {
+  const { ceremony } = siteData;
+  const isMapConfigured = isConfiguredExternalUrl(ceremony.mapUrl);
+  const isWazeConfigured = isConfiguredExternalUrl(ceremony.wazeUrl);
+  const googleCalendarUrl = buildGoogleCalendarUrl(ceremony.calendarEvent);
+  const icsDataUri = buildIcsDataUri(ceremony.calendarEvent);
+  const isCalendarConfigured = isConfiguredExternalUrl(googleCalendarUrl);
+  const hasIcsFile = Boolean(icsDataUri);
+
   const handleMapClick = () => {
-    window.open('https://direccion-sacada-de-google-maps', '_blank');
+    trackEvent('map_click', {
+      provider: 'google_maps',
+      source: 'ceremony_section'
+    });
+    openExternalUrl(ceremony.mapUrl);
   };
+
+  const handleWazeClick = () => {
+    trackEvent('map_click', {
+      provider: 'waze',
+      source: 'ceremony_section'
+    });
+    openExternalUrl(ceremony.wazeUrl);
+  };
+
+  const handleCalendarClick = () => {
+    trackEvent('calendar_click', {
+      provider: 'google_calendar',
+      source: 'ceremony_section'
+    });
+    openExternalUrl(googleCalendarUrl);
+  };
+
+  const handleIcsDownload = () => {
+    trackEvent('calendar_click', {
+      provider: 'ics_file',
+      source: 'ceremony_section'
+    });
+  };
+
   return (
-    <section className="ceremony-section">
-      <h2 className="section-title">Ceremonia y Fiesta</h2>
+    <section className="ceremony-section" id={ceremony.sectionId}>
+      <h2 className="section-title">{ceremony.title}</h2>
       <div className="ceremony-content">
         <FaMapMarkerAlt className="ceremony-icon" />
         <p className="ceremony-address">
-          Salón de Eventos "Club de Pepito"<br />
-          San Juan 1124<br />
-          Rosario, Santa Fe
+          {ceremony.venueName}
+          <br />
+          {ceremony.addressLines.map((line) => (
+            <span key={line}>
+              {line}
+              <br />
+            </span>
+          ))}
         </p>
-        <button className="cta-btn" onClick={handleMapClick}>
-          <FaMapMarkerAlt /> Cómo llegar
-        </button>
+        <div className="ceremony-actions">
+          <button
+            className="cta-btn"
+            onClick={handleMapClick}
+            type="button"
+            disabled={!isMapConfigured}
+            aria-disabled={!isMapConfigured}
+          >
+            <FaMapMarkerAlt /> {ceremony.mapCta}
+          </button>
+          <button
+            className="cta-btn"
+            onClick={handleWazeClick}
+            type="button"
+            disabled={!isWazeConfigured}
+            aria-disabled={!isWazeConfigured}
+          >
+            <FaRoute /> {ceremony.wazeCta}
+          </button>
+          <button
+            className="cta-btn"
+            onClick={handleCalendarClick}
+            type="button"
+            disabled={!isCalendarConfigured}
+            aria-disabled={!isCalendarConfigured}
+          >
+            <FaCalendarPlus /> {ceremony.calendarCta}
+          </button>
+          {hasIcsFile ? (
+            <a className="cta-btn" href={icsDataUri} download={ceremony.icsFileName} onClick={handleIcsDownload}>
+              <FaDownload /> {ceremony.icsCta}
+            </a>
+          ) : (
+            <button className="cta-btn" type="button" disabled aria-disabled="true">
+              <FaDownload /> {ceremony.icsCta}
+            </button>
+          )}
+        </div>
+        {(!isMapConfigured || !isWazeConfigured) && <p className="link-helper">{ceremony.mapUnavailableText}</p>}
+        {(!isCalendarConfigured || !hasIcsFile) && <p className="link-helper">{ceremony.calendarUnavailableText}</p>}
       </div>
       <br />
       <div className="events-timeline">
-        <div className="event-item">
-          <p className="event-time">21:30 PM</p>
-          <p className="event-name">Inicio de ceremonia</p>
-        </div>
-        <div className="event-item">
-          <p className="event-time">04:00 AM</p>
-          <p className="event-name">Finalización de la fiesta</p>
-        </div>
+        {ceremony.timeline.map((event) => (
+          <div className="event-item" key={`${event.time}-${event.name}`}>
+            <p className="event-time">{event.time}</p>
+            <p className="event-name">{event.name}</p>
+          </div>
+        ))}
       </div>
       <p className="schedule-note">
-        <em>* Cerca de la fecha se definirán los detalles</em>
+        <em>* {ceremony.note}</em>
       </p>
     </section>
   );

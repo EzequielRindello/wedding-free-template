@@ -1,48 +1,50 @@
 import { useState } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import siteData from '../content/siteData';
 
 const FaqAccordion = () => {
   const [openIndex, setOpenIndex] = useState(null);
-
-  const faqs = [
-    {
-      title: 'Dress Code',
-      content: 'pone lo que quieras aca'
-    },
-    {
-      title: 'Tarjeta',
-      content: 'Valor por persona: $xxxx.'
-    },
-    {
-      title: 'Regalo',
-      content: 'pone lo que quieras aca'
-    }
-  ];
+  const { faq } = siteData;
 
   return (
     <section className="faq-section">
-      <h2 className="section-title">Dudas Frecuentes</h2>
+      <h2 className="section-title">{faq.title}</h2>
       <div className="faq-container">
-        {faqs.map((faq, idx) => (
-          <div key={idx} className="faq-item">
-            <button
-              className={`faq-question ${openIndex === idx ? 'active' : ''}`}
-              onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
-            >
-              {faq.title}
-              {openIndex === idx ? <FaChevronUp /> : <FaChevronDown />}
-            </button>
-            <div className={`faq-answer ${openIndex === idx ? 'open' : ''}`}>
-              <p>{faq.content}</p>
-              {faq.title === 'Regalo' && (
-                <>
-                  <p>Alias: <strong>tu alias</strong></p>
-                  <p>Datos: <strong>Pepita - Mercado Pago</strong></p>
-                </>
-              )}
+        {faq.items.map((item, idx) => {
+          const isOpen = openIndex === idx;
+          const questionId = `faq-question-${item.id}`;
+          const answerId = `faq-answer-${item.id}`;
+
+          return (
+            <div key={item.id} className="faq-item">
+              <button
+                id={questionId}
+                className={`faq-question ${isOpen ? 'active' : ''}`}
+                onClick={() => setOpenIndex(isOpen ? null : idx)}
+                type="button"
+                aria-expanded={isOpen}
+                aria-controls={answerId}
+              >
+                {item.title}
+                {isOpen ? <FaChevronUp /> : <FaChevronDown />}
+              </button>
+              <div
+                id={answerId}
+                className={`faq-answer ${isOpen ? 'open' : ''}`}
+                role="region"
+                aria-labelledby={questionId}
+                aria-hidden={!isOpen}
+              >
+                <p>{item.content}</p>
+                {item.details?.map((detail) => (
+                  <p key={detail.label}>
+                    {detail.label}: <strong>{detail.value}</strong>
+                  </p>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );
