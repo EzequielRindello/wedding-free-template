@@ -5,7 +5,8 @@ import { buildGoogleCalendarUrl, buildIcsDataUri } from '../utils/calendarLinks'
 import { trackEvent } from '../utils/analytics';
 
 const Ceremony = () => {
-  const { ceremony } = siteData;
+  const { ceremony, eventSchedule } = siteData;
+  const hasExtendedSchedule = Array.isArray(eventSchedule?.events) && eventSchedule.events.length > 0;
   const isMapConfigured = isConfiguredExternalUrl(ceremony.mapUrl);
   const isWazeConfigured = isConfiguredExternalUrl(ceremony.wazeUrl);
   const googleCalendarUrl = buildGoogleCalendarUrl(ceremony.calendarEvent);
@@ -100,18 +101,22 @@ const Ceremony = () => {
         {(!isMapConfigured || !isWazeConfigured) && <p className="link-helper">{ceremony.mapUnavailableText}</p>}
         {(!isCalendarConfigured || !hasIcsFile) && <p className="link-helper">{ceremony.calendarUnavailableText}</p>}
       </div>
-      <br />
-      <div className="events-timeline">
-        {ceremony.timeline.map((event) => (
-          <div className="event-item" key={`${event.time}-${event.name}`}>
-            <p className="event-time">{event.time}</p>
-            <p className="event-name">{event.name}</p>
+      {!hasExtendedSchedule && (
+        <>
+          <br />
+          <div className="events-timeline">
+            {ceremony.timeline.map((event) => (
+              <div className="event-item" key={`${event.time}-${event.name}`}>
+                <p className="event-time">{event.time}</p>
+                <p className="event-name">{event.name}</p>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <p className="schedule-note">
-        <em>* {ceremony.note}</em>
-      </p>
+          <p className="schedule-note">
+            <em>* {ceremony.note}</em>
+          </p>
+        </>
+      )}
     </section>
   );
 };

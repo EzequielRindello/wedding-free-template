@@ -28,6 +28,74 @@ Antes de personalizar la landing, seguí la guía completa paso a paso:
    ```
 3. Editá los componentes en `src/components`, reemplazá imágenes en `src/assets/images` y ajustá estilos en `global.css`.
 
+## Modo Fullstack (Frontend + API)
+
+Este repo ya incluye un backend simple en Node + Express + Prisma + SQLite para 2 CRUDs:
+
+- RSVP
+- Song Requests
+
+Primera puesta en marcha recomendada:
+
+```bash
+npm install
+cp .env.example .env
+npm run db:push
+npm run dev:full
+```
+
+Si usas PowerShell en Windows, el copiado puede ser:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+El frontend usa `/api` en desarrollo mediante proxy de Vite (`vite.config.js`).
+
+Comandos útiles:
+
+```bash
+npm run dev:api
+npm run db:studio
+npm run db:generate
+```
+
+API incluida:
+
+- Health: `GET /api/health`
+- Publicos:
+   - `POST /api/public/rsvps`
+   - `POST /api/public/song-requests`
+- Admin (requiere header `x-admin-token`):
+   - `GET /api/admin/capabilities`
+   - `GET /api/admin/rsvps`
+   - `PATCH /api/admin/rsvps/:id`
+   - `DELETE /api/admin/rsvps/:id`
+   - `GET /api/admin/song-requests`
+   - `PATCH /api/admin/song-requests/:id`
+   - `DELETE /api/admin/song-requests/:id`
+
+Panel admin simple:
+
+- Abrí `http://localhost:5173/admin` (o `http://localhost:5173/?admin=1`)
+- Ingresá tu token (`ADMIN_TOKEN` en `.env`)
+- El panel consulta `GET /api/admin/capabilities` para decidir qué funciones habilitar.
+- Si el token es full: podés listar, editar y eliminar RSVP/Song Requests.
+- Si el token es readonly: solo podés consultar, sin editar ni eliminar.
+- El token se guarda en `localStorage` y se limpia desde "Cerrar sesion"
+
+Tokens opcionales:
+
+- `ADMIN_TOKEN`: acceso completo.
+- `ADMIN_READONLY_TOKEN`: acceso solo lectura (opcional).
+
+Flujo rapido de verificacion:
+
+1. Ejecutar `npm run db:push`.
+2. Ejecutar `npm run dev:full`.
+3. Verificar `http://localhost:8787/api/health`.
+4. Abrir `http://localhost:5173/admin` y gestionar registros.
+
 ## Estructura del proyecto
 
 ```

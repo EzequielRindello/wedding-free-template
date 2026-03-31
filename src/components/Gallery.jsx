@@ -46,7 +46,14 @@ const Gallery = () => {
   // maximo de 200kb por imagen idealmente
   // esto es logrado con https://squoosh.app/ hace un resize y luego guardando con quality 75-80%
   // tambien usar formato webp para mejor compresion
-  const images = [img1, img2, img3, img4, img5, img6];
+  const images = [
+    { src: img1, alt: 'Momento 1', width: 900, height: 1200 },
+    { src: img2, alt: 'Momento 2', width: 900, height: 1200 },
+    { src: img3, alt: 'Momento 3', width: 900, height: 1200 },
+    { src: img4, alt: 'Momento 4', width: 900, height: 1200 },
+    { src: img5, alt: 'Momento 5', width: 900, height: 1200 },
+    { src: img6, alt: 'Momento 6', width: 900, height: 1200 }
+  ];
   const marqueeSpeed = isMobile ? 24 : 38;
 
   return (
@@ -61,17 +68,31 @@ const Gallery = () => {
       <div className="gallery-wrapper">
         {prefersReducedMotion ? (
           <div className="gallery-static-track">
-            {images.map((img, idx) => (
+            {images.map((image, idx) => (
               <div key={idx} className="gallery-item-marquee">
-                <img src={img} alt={`Momento ${idx + 1}`} loading="lazy" decoding="async" />
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  loading="lazy"
+                  decoding="async"
+                  width={image.width}
+                  height={image.height}
+                />
               </div>
             ))}
           </div>
         ) : (
           <Marquee speed={marqueeSpeed} gradient={false} pauseOnHover pauseOnClick>
-            {images.map((img, idx) => (
+            {images.map((image, idx) => (
               <div key={idx} className="gallery-item-marquee">
-                <img src={img} alt={`Momento ${idx + 1}`} loading="lazy" decoding="async" />
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  loading="lazy"
+                  decoding="async"
+                  width={image.width}
+                  height={image.height}
+                />
               </div>
             ))}
           </Marquee>

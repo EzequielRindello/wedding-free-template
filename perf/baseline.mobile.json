@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-03-30T22:56:58.400Z",
+  "url": "http://127.0.0.1:4173/",
+  "scores": {
+    "performance": 87,
+    "accessibility": 91,
+    "bestPractices": 100,
+    "seo": 92
+  },
+  "coreWebVitals": {
+    "lcpSeconds": 3.33,
+    "cls": 0.023,
+    "inpSeconds": null
+  },
+  "thresholds": {
+    "lcpSeconds": 2.5,
+    "cls": 0.1,
+    "inpSeconds": 0.2
+  }
+}

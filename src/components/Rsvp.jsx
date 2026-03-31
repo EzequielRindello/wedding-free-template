@@ -8,8 +8,9 @@ const Rsvp = () => {
   const isRsvpConfigured = isConfiguredExternalUrl(rsvp.formUrl);
 
   const handleRsvpClick = () => {
-    trackEvent('rsvp_external_click', {
-      source: 'rsvp_section'
+    trackEvent('cta_rsvp_click', {
+      section: 'rsvp',
+      ctaType: 'external_form'
     });
     openExternalUrl(rsvp.formUrl);
   };

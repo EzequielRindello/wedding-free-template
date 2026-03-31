@@ -59,15 +59,17 @@ const StickyCta = () => {
   }, []);
 
   const handlePrimaryClick = () => {
-    trackEvent('sticky_cta_click', {
-      cta: 'rsvp'
+    trackEvent('cta_rsvp_click', {
+      section: 'sticky_cta',
+      ctaType: 'primary'
     });
     setIsExpanded(false);
   };
 
   const handleSecondaryClick = () => {
-    trackEvent('sticky_cta_click', {
-      cta: 'ceremony'
+    trackEvent('cta_location_click', {
+      section: 'sticky_cta',
+      ctaType: 'secondary'
     });
     setIsExpanded(false);
   };

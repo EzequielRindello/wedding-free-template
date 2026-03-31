@@ -61,7 +61,7 @@ const siteData = {
     successMessage: 'Recibimos tu respuesta. Si hay cambios, podes contactarnos por WhatsApp.',
     errorMessage: 'No pudimos enviar tu confirmacion. Probá nuevamente en unos minutos.',
     localModeText: 'Modo demo activo: para guardar respuestas en un servicio real, completá webhookUrl.',
-    webhookUrl: '',
+    webhookUrl: '/api/public/rsvps',
     formUrl: '',
     externalCtaLabel: 'Abrir formulario externo',
     formUnavailableText: 'Configurá el formulario RSVP en src/content/siteData.js.'
@@ -100,6 +100,17 @@ const siteData = {
     title: '¡Que no falte tu tema favorito!',
     description: 'Ayudanos a armar tu playlist.',
     ctaLabel: 'Sugerir canción',
+    apiUrl: '/api/public/song-requests',
+    submitLabel: 'Enviar sugerencia',
+    submittingLabel: 'Enviando...',
+    successMessage: 'Gracias! Tu cancion ya quedo registrada.',
+    errorMessage: 'No pudimos guardar tu sugerencia. Intenta nuevamente.',
+    fields: {
+      guestNameLabel: 'Tu nombre',
+      songTitleLabel: 'Cancion',
+      artistLabel: 'Artista',
+      noteLabel: 'Comentario (opcional)'
+    },
     formUrl: '',
     formUnavailableText: 'Configurá el formulario de canciones en src/content/siteData.js.'
   },

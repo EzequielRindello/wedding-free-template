@@ -1,4 +1,21 @@
 const siteData = {
+  seo: {
+    title: 'Invitacion de Casamiento | Sofia & Mateo',
+    description: 'Invitacion digital de boda con RSVP, agenda, maps y contacto para invitados.',
+    canonicalUrl: 'https://example.com/',
+    ogImage: '/images/hero-desktop.webp',
+    themeColor: '#274C77',
+    locale: 'es_AR',
+    twitterCard: 'summary_large_image'
+  },
+  privacy: {
+    enabled: false,
+    password: 'BODA2027',
+    allowIndexing: true,
+    accessTitle: 'Invitacion privada',
+    accessDescription: 'Ingresá la clave para ver todos los detalles del evento.',
+    accessHint: 'Pedinos la clave por WhatsApp si no la recibiste.'
+  },
   couple: {
     names: 'Sofia & Mateo',
     heroSubtitle: '¡NOS CASAMOS!',
@@ -14,6 +31,37 @@ const siteData = {
     targetDate: '2027-04-03T20:30:00',
     displayDate: '03 • ABRIL • 2027',
     introText: '¡Ya falta poco para celebrar juntos!'
+  },
+  eventSchedule: {
+    sectionId: 'event-schedule',
+    title: 'Agenda completa del casamiento',
+    intro: 'Te dejamos la agenda para que organices tu llegada y disfrutes cada momento.',
+    events: [
+      {
+        id: 'recepcion',
+        type: 'Recepcion',
+        dateTime: '2027-04-03T19:45:00-03:00',
+        venue: 'Puerto Norte Design Hotel',
+        address: 'Av. Luis Candido Carballo 148, Rosario, Santa Fe',
+        mapUrl: 'https://maps.google.com/?q=Puerto+Norte+Design+Hotel+Rosario'
+      },
+      {
+        id: 'ceremonia',
+        type: 'Ceremonia',
+        dateTime: '2027-04-03T20:30:00-03:00',
+        venue: 'Puerto Norte Design Hotel',
+        address: 'Av. Luis Candido Carballo 148, Rosario, Santa Fe',
+        mapUrl: 'https://maps.google.com/?q=Puerto+Norte+Design+Hotel+Rosario'
+      },
+      {
+        id: 'fiesta',
+        type: 'Fiesta',
+        dateTime: '2027-04-04T00:30:00-03:00',
+        venue: 'Puerto Norte Design Hotel',
+        address: 'Av. Luis Candido Carballo 148, Rosario, Santa Fe',
+        mapUrl: 'https://maps.google.com/?q=Puerto+Norte+Design+Hotel+Rosario'
+      }
+    ]
   },
   ceremony: {
     sectionId: 'ceremony',
@@ -55,6 +103,36 @@ const siteData = {
       }
     ],
     note: 'Agenda sujeta a ajustes de último momento.'
+  },
+  travel: {
+    sectionId: 'travel',
+    title: 'Hospedaje y traslados',
+    subtitle: 'Si venis de afuera, estas opciones te pueden simplificar el viaje.',
+    hotels: [
+      {
+        name: 'Puerto Norte Design Hotel',
+        distance: '0 km del salon',
+        bookingUrl: 'https://www.google.com/travel/hotels/entity/CgoI4v6f9Nvyw_0TEAE'
+      },
+      {
+        name: 'Dazzler by Wyndham Rosario',
+        distance: '2.4 km del salon',
+        bookingUrl: 'https://www.wyndhamhotels.com/dazzler/rosario-argentina/dazzler-by-wyndham-rosario/overview'
+      }
+    ],
+    transport: [
+      {
+        title: 'Remis sugerido',
+        detail: 'Reserva anticipada recomendada para salida post-fiesta.',
+        contactLabel: 'WhatsApp remis',
+        contactUrl: 'https://wa.me/5493415550199'
+      },
+      {
+        title: 'Apps de viaje',
+        detail: 'Uber/Cabify suelen tener buena disponibilidad en la zona.'
+      }
+    ],
+    notes: 'Si necesitas compartir traslado con otros invitados, avisanos y armamos grupos.'
   },
   logistics: {
     sectionId: 'logistics',
@@ -99,10 +177,47 @@ const siteData = {
     successMessage: 'Recibimos tu respuesta. Si tenés cambios, escribinos por WhatsApp.',
     errorMessage: 'No pudimos enviar tu confirmación. Probá nuevamente en unos minutos.',
     localModeText: 'Modo demo activo: para guardar respuestas en un backend real, completá webhookUrl.',
-    webhookUrl: '',
+    offlineMessage: 'No hay conexion. Revisa internet y volve a intentar.',
+    validationMessage: 'Revisa los campos obligatorios antes de enviar.',
+    webhookUrl: '/api/public/rsvps',
     formUrl: 'https://forms.gle/1M7jvLkgQJr4zR8T8',
     externalCtaLabel: 'Abrir formulario externo',
-    formUnavailableText: 'Configurá el formulario RSVP en src/content/siteData.js si querés cambiarlo.'
+    formUnavailableText: 'Configurá el formulario RSVP en src/content/siteData.js si querés cambiarlo.',
+    formConfig: {
+      maxGuestsPerInvite: 8,
+      requireGuestNames: true,
+      requireDietaryInfo: false
+    },
+    guestNamesLabel: 'Nombres de acompañantes',
+    guestNamePlaceholder: 'Nombre y apellido del invitado',
+    dietaryLabel: 'Restricciones alimentarias',
+    dietaryPlaceholder: 'Ej: vegetariano, sin TACC, sin lactosa',
+    confirmation: {
+      referencePrefix: 'RSVP',
+      nextStepsTitle: 'Proximos pasos',
+      nextStepsMessage: 'Guardamos tu respuesta. Si necesitas cambios, escribinos por WhatsApp.',
+      calendarCtaLabel: 'Agregar fecha al calendario',
+      resetLabel: 'Enviar otra respuesta'
+    }
+  },
+  giftRegistry: {
+    sectionId: 'gift-registry',
+    title: 'Regalos y luna de miel',
+    intro: 'Tu presencia es lo mas importante. Si queres hacernos un regalo, podes ayudarnos con nuestra luna de miel.',
+    cashGift: {
+      alias: 'SOFIAYMATEO.BODA',
+      holder: 'Sofia Alvarez',
+      bank: 'Mercado Pago'
+    },
+    externalLinks: [
+      {
+        label: 'Lista sugerida de regalos',
+        url: ''
+      }
+    ],
+    copyCtaLabel: 'Copiar',
+    copiedText: 'Copiado',
+    unavailableText: 'Configura links de regalos en src/content/siteData.js si queres mostrarlos.'
   },
   trust: {
     sectionId: 'trust',
@@ -153,6 +268,17 @@ const siteData = {
     title: '¡Que no falte tu tema favorito!',
     description: 'Ayudanos a armar la playlist de la noche.',
     ctaLabel: 'Sugerir canción',
+    apiUrl: '/api/public/song-requests',
+    submitLabel: 'Enviar sugerencia',
+    submittingLabel: 'Enviando... ',
+    successMessage: 'Gracias! Tu cancion ya quedo registrada.',
+    errorMessage: 'No pudimos guardar tu sugerencia. Intenta nuevamente.',
+    fields: {
+      guestNameLabel: 'Tu nombre',
+      songTitleLabel: 'Cancion',
+      artistLabel: 'Artista',
+      noteLabel: 'Comentario (opcional)'
+    },
     formUrl: 'https://forms.gle/2nSf9V8sJkYxQdJ59',
     formUnavailableText: 'Configurá el formulario de canciones en src/content/siteData.js si querés cambiarlo.'
   },
